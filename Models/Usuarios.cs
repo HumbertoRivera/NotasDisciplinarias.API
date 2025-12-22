@@ -1,25 +1,14 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NotasDisciplinarias.API.Models
+public class Usuarios
 {
-    public class Usuario
-    {
-        [Key]
-        [Column("id_usuario")]
-        public int Id_Usuario { get; set; }
+    public int Id { get; set; }
+     public required string Usuario { get; set; }
+    public required string PasswordHash { get; set; }
 
-        [Column("Nombre_Completo")]
-        public string Nombre_Completo { get; set; } = string.Empty;
+    public required string Rol { get; set; }
+    public required string Region { get; set; }
+    public required string Plaza { get; set; }
 
-        [Column("Rol")]
-        public string Rol { get; set; } = string.Empty;
+    public required string Plaza_jefe  { get; set; }
 
-        [Column("Area")]
-        public string Area { get; set; } = string.Empty;
-
-        [Column("id_jefe_inmediato")]
-        public int? Id_Jefe_Inmediato { get; set; }
-
-    }
+    public bool Activo { get; set; }
 }

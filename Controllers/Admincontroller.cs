@@ -16,30 +16,35 @@ namespace NotasDisciplinarias.API.Controllers
             _context = context;
         }
 
-        // GET: api/admin/casos-activos/
-       [HttpGet("casos-activos/{idJefe}")]
-public async Task<IActionResult> GetCasosActivos(int idJefe)
-{
-    var casos = await (
-        from c in _context.Casos
-        join u in _context.Usuarios on c.IdUsuario equals u.Id_Usuario
-        join cat in _context.Categorias on c.IdCategoria equals cat.Id_Categoria
-        where u.Id_Jefe_Inmediato == idJefe
-              && c.Estatus == 1
-        select new CasoAdminResponseDto
+ // GET: api/admin/casos-activos
+        [HttpGet("casos-activos")]
+        public async Task<IActionResult> GetCasosActivos()
         {
-            IdCaso = c.IdCaso,
-            IdUsuario = u.Id_Usuario,
-            Empleado = u.Nombre_Completo,   // string
-            Categoria = cat.Nombre,         // string
-            Descripcion = c.Descripcion,
-            FechaRegistro = c.FechaRegistro,
-            Estatus = c.Estatus.ToString ()
+            // 🔐 Plaza del jefe desde el token
+            var plazaJefe = User.FindFirst("Plaza")?.Value;
+
+            if (string.IsNullOrEmpty(plazaJefe))
+                return Unauthorized("No se pudo determinar la plaza del usuario");
+
+            var casos = await (
+                from c in _context.Casos
+                join u in _context.Usuarios on c.IdUsuario equals u.Id
+                join cat in _context.Categorias on c.IdCategoria equals cat.Id_Categoria
+                where u.Plaza_jefe == plazaJefe
+                      && c.Estatus == 1
+                select new CasoAdminResponseDto
+                {
+                    IdCaso = c.IdCaso,
+                    IdUsuario = u.Id,
+                    Empleado = u.Usuario,          // consistente
+                    Categoria = cat.Nombre,
+                    Descripcion = c.Descripcion,
+                    FechaRegistro = c.FechaRegistro,
+                    Estatus = c.Estatus.ToString()
+                }
+            ).ToListAsync();
+
+            return Ok(casos);
         }
-    ).ToListAsync();
-
-    return Ok(casos);
-}
-
     }
 }

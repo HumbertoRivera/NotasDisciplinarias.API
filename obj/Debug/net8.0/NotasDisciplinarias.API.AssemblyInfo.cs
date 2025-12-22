@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NotasDisciplinarias.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2814bbf595be1b2c20987b5697aec2ea3fbcbe1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+380a1a3a3e5d1d161b846e094502796baac965ee")]
 [assembly: System.Reflection.AssemblyProductAttribute("NotasDisciplinarias.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NotasDisciplinarias.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

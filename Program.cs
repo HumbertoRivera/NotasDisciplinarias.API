@@ -1,60 +1,54 @@
-using Microsoft.EntityFrameworkCore;
+
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using NotasDisciplinarias.API.Data;
-using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ================================
-// 🔹 DB CONTEXT
-// ================================
-builder.Services.AddDbContext<NotasDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    )
-);
+// DB
+builder.Services.AddDbContext<NotasDbContext>();
 
-// ================================
-// 🔹 CORS (PERMITIR ANGULAR)
-// ================================
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngular",
-        policy =>
-        {
-            policy
-                .WithOrigins("http://localhost:4200")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
-});
+// Services
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
-// ================================
-// 🔹 SERVICES
-// ================================
+// Controllers
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// ================================
-// 🔹 APP
-// ================================
+// Auth
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                    builder.Configuration["Jwt:Key"]
+                    ?? throw new InvalidOperationException("JWT Key no configurada")
+                )
+            )
+        };
+    });
+
 var app = builder.Build();
 
-// ================================
-// 🔹 MIDDLEWARE
-// ================================
+// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-// 🔥 CORS VA AQUÍ, ANTES DE AUTH Y MAPCONTROLLERS
-app.UseCors("AllowAngular");
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

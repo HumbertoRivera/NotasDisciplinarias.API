@@ -11,7 +11,7 @@ namespace NotasDisciplinarias.API.Data
     }
 
     public DbSet<Casos> Casos { get; set; }
-    public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<Usuarios> Usuarios { get; set; }
     public DbSet<Categoria> Categorias { get; set; }
     public DbSet<Accion> Acciones { get; set; }
     public DbSet<Evidencias> Evidencias { get; set; }
