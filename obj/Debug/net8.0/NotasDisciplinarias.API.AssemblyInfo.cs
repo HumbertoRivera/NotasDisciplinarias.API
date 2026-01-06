@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NotasDisciplinarias.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5de2bff866b80ef414c3e96b0e4eee6b7b1e87e8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ce233e60dd4257d453ee0c4547657df28d7d691e")]
 [assembly: System.Reflection.AssemblyProductAttribute("NotasDisciplinarias.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NotasDisciplinarias.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
